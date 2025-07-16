@@ -49,7 +49,7 @@ The following inputs are available for the action:
 - `shipthis_token`: The ShipThis API token to use for authentication. This is
   required.
 - `ship_android`: Whether to ship the Android build. Defaults to `true`.
-- `ship_apple`: Whether to ship the iOS build Apple. Defaults to `true`.
+- `ship_ios`: Whether to ship the iOS build Apple. Defaults to `true`.
 
 ## License
 

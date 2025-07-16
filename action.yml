@@ -14,7 +14,7 @@ inputs:
     description: "Build and upload to Google Play"
     required: true
     default: true
-  ship_apple:
+  ship_ios:
     description: "Build and upload to the App Store"
     required: true
     default: true
@@ -32,14 +32,14 @@ runs:
         SHIPTHIS_TOKEN: ${{ inputs.shipthis_token }}
     - name: Validate Game Status
       id: validate_game
-      if: inputs.ship_android == "true" && inputs.ship_apple == "true"
+      if: inputs.ship_android == "true" && inputs.ship_ios == "true"
       run: |
         shipthis game status
     - name: Validate iOS Setup
       needs: validate_game
-      if: needs.validate_game.result == 'skipped' && inputs.ship_apple == "true"
+      if: needs.validate_game.result == 'skipped' && inputs.ship_ios == "true"
       run: |
-        shipthis game apple status
+        shipthis game ios status
     - name: Validate Android Setup
       needs: validate_game
       if: |
@@ -48,22 +48,22 @@ runs:
         shipthis game android status
     - name: Build Game
       id: build_game
-      if: inputs.ship_android == "true" && inputs.ship_apple == "true"
+      if: inputs.ship_android == "true" && inputs.ship_ios == "true"
       run: |
-        shipthis ship
+        shipthis game ship
       env:
         SHIPTHIS_TOKEN: ${{ inputs.shipthis_token }}
     - name: Build Apple Game
       needs: build_game
-      if: needs.build_game.result == 'skipped' && inputs.ship_apple == "true"
+      if: needs.build_game.result == 'skipped' && inputs.ship_ios == "true"
       run: |
-        shipthis apple ship
+        shipthis game --platform ios ship
       env:
         SHIPTHIS_TOKEN: ${{ inputs.shipthis_token }}
     - name: Build Android Game
       needs: build_game
       if: needs.build_game.result == 'skipped' && inputs.ship_android == "true"
       run: |
-        shipthis android ship
+        shipthis game ship --platform android
       env:
         SHIPTHIS_TOKEN: ${{ inputs.shipthis_token }}
