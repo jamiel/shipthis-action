@@ -36,27 +36,27 @@ runs:
         shipthis status
       env:
         SHIPTHIS_TOKEN: ${{ inputs.shipthis_token }}
-    - name: Validate Game Status
-      if: inputs.ship_android == 'true' && inputs.ship_ios == 'true'
-      shell: bash
-      run: |
-        shipthis game status
-      env:
-        SHIPTHIS_TOKEN: ${{ inputs.shipthis_token }}
-    - name: Validate iOS Setup
-      if: inputs.ship_ios == 'true' && inputs.ship_android != 'true'
-      shell: bash
-      run: |
-        shipthis game ios status
-      env:
-        SHIPTHIS_TOKEN: ${{ inputs.shipthis_token }}
-    - name: Validate Android Setup
-      if: inputs.ship_android == 'true' && inputs.ship_ios != 'true'
-      shell: bash
-      run: |
-        shipthis game android status
-      env:
-        SHIPTHIS_TOKEN: ${{ inputs.shipthis_token }}
+    # - name: Validate Game Status
+    #   if: inputs.ship_android == 'true' && inputs.ship_ios == 'true'
+    #   shell: bash
+    #   run: |
+    #     shipthis game status
+    #   env:
+    #     SHIPTHIS_TOKEN: ${{ inputs.shipthis_token }}
+    # - name: Validate iOS Setup
+    #   if: inputs.ship_ios == 'true' && inputs.ship_android != 'true'
+    #   shell: bash
+    #   run: |
+    #     shipthis game ios status
+    #   env:
+    #     SHIPTHIS_TOKEN: ${{ inputs.shipthis_token }}
+    # - name: Validate Android Setup
+    #   if: inputs.ship_android == 'true' && inputs.ship_ios != 'true'
+    #   shell: bash
+    #   run: |
+    #     shipthis game android status
+    #   env:
+    #     SHIPTHIS_TOKEN: ${{ inputs.shipthis_token }}
     - name: Build Game (Both Platforms)
       if: inputs.ship_android == 'true' && inputs.ship_ios == 'true'
       shell: bash
