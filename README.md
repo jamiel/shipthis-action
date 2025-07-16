@@ -26,20 +26,21 @@ Setup your Github Action workflow file to use this action. Here is an example on
 pushing to `main` branch:
 
 ```yaml
+---
 on:
-    push:
-        branches:
-        - main
+  push:
+    branches:
+      - main
 jobs:
-    ship:
-        runs-on: ubuntu-latest
-        steps:
-        - name: Checkout code
-          uses: actions/checkout@v2
-        - name: ShipThis Action
-          uses: shipth-is/action@v1
-          with:
-            shipthis_token: ${{ secrets.SHIPTHIS_TOKEN }}
+  ship:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: ShipThis Action
+        uses: shipth-is/action@v1
+        with:
+          shipthis_token: ${{ secrets.SHIPTHIS_TOKEN }}
 ```
 
 ## Inputs
