@@ -1,0 +1,69 @@
+---
+name: "ShipThis CLI Official"
+description: "Build and upload Godot games to the App Store and Google Play"
+branding:
+  icon: "upload"
+  color: "gray-dark"
+
+inputs:
+  shipthis_token:
+    description: "Your ShipThis API key"
+    required: true
+    default: ""
+  ship_android:
+    description: "Build and upload to Google Play"
+    required: true
+    default: true
+  ship_apple:
+    description: "Build and upload to the App Store"
+    required: true
+    default: true
+
+runs:
+  using: "node24"
+  steps:
+    - name: "Install ShipThis CLI"
+      run: |
+        npm install -g shipthis
+    - name: Validate ShipThis Setup
+      run: |
+        shipthis status
+      env:
+        SHIPTHIS_TOKEN: ${{ inputs.shipthis_token }}
+    - name: Validate Game Status
+      id: validate_game
+      if: inputs.ship_android == "true" && inputs.ship_apple == "true"
+      run: |
+        shipthis game status
+    - name: Validate iOS Setup
+      needs: validate_game
+      if: needs.validate_game.result == 'skipped' && inputs.ship_apple == "true"
+      run: |
+        shipthis game apple status
+    - name: Validate Android Setup
+      needs: validate_game
+      if: |
+        needs.validate_game.result == 'skipped' && inputs.ship_android == "true"
+      run: |
+        shipthis game android status
+    - name: Build Game
+      id: build_game
+      if: inputs.ship_android == "true" && inputs.ship_apple == "true"
+      run: |
+        shipthis ship
+      env:
+        SHIPTHIS_TOKEN: ${{ inputs.shipthis_token }}
+    - name: Build Apple Game
+      needs: build_game
+      if: needs.build_game.result == 'skipped' && inputs.ship_apple == "true"
+      run: |
+        shipthis apple ship
+      env:
+        SHIPTHIS_TOKEN: ${{ inputs.shipthis_token }}
+    - name: Build Android Game
+      needs: build_game
+      if: needs.build_game.result == 'skipped' && inputs.ship_android == "true"
+      run: |
+        shipthis android ship
+      env:
+        SHIPTHIS_TOKEN: ${{ inputs.shipthis_token }}
