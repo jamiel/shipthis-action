@@ -1,7 +1,7 @@
 # ShipThis Action
 
 A Github Action to use the [ShipThis CLI](https://github.com/shipth-is/cli) to
-deploy your Godot games to the Google Play Store and Apple App Store.
+build and upload your Godot games to the Google Play Store and Apple App Store.
 
 ## Quickstart
 
